@@ -1,0 +1,24 @@
+name: Talkshot
+options:
+  bundleIdPrefix: com.talkshot
+  deploymentTarget:
+    macOS: "14.0"
+settings:
+  SWIFT_VERSION: "5.9"
+  MACOSX_DEPLOYMENT_TARGET: "14.0"
+targets:
+  Talkshot:
+    type: application
+    platform: macOS
+    sources:
+      - Talkshot
+    dependencies:
+      - sdk: ScreenCaptureKit.framework
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.talkshot.app
+      INFOPLIST_FILE: Talkshot/Info.plist
+      CODE_SIGN_ENTITLEMENTS: Talkshot/Talkshot.entitlements
+      GENERATE_INFOPLIST_FILE: NO
+      CURRENT_PROJECT_VERSION: 1
+      MARKETING_VERSION: 1.0.0
+      ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon

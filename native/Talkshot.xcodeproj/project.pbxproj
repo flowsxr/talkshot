@@ -1,0 +1,376 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		16FD9B5655A35D679C49B861 /* PermissionsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 994E70EEBC2998BF14D105F5 /* PermissionsService.swift */; };
+		406084D85BCB14323499BDD4 /* AudioDeviceSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D548AF2196765AF9C43B410 /* AudioDeviceSelector.swift */; };
+		53EE766462DEAD0FF6421163 /* SessionEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD4F9DED5C22298D21612152 /* SessionEntry.swift */; };
+		61102926F19C8B7666F098A5 /* CaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8D1066B6CDE2D0EF38E679 /* CaptureService.swift */; };
+		7A64031EFC499E19CA8AFE83 /* HotkeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11B305648147C1A0274FE6A /* HotkeyService.swift */; };
+		ADC3BB9FB1DD6D7A637693D8 /* TalkshotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46A3198C4771A0F520622B4D /* TalkshotApp.swift */; };
+		AEE20B7DA52C66A15872CE0E /* TranscriptionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FFD723FA6DCB1425A22211E /* TranscriptionService.swift */; };
+		BE5C5162A51F6DF9BA159025 /* ScreenCaptureKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 152A506D42964E6AC268B549 /* ScreenCaptureKit.framework */; };
+		C32378C85BD6AA3F7D56DE55 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15E660A2CC748AB669F107CE /* AudioRecorder.swift */; };
+		CF6AAECD6FDE6050F256EEB1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C11F802C2932EA6EB9B8185 /* Assets.xcassets */; };
+		F1AF3C573FFF48C691D4575D /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40134B747D13B8BC1CA8D755 /* AppState.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		152A506D42964E6AC268B549 /* ScreenCaptureKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScreenCaptureKit.framework; path = System/Library/Frameworks/ScreenCaptureKit.framework; sourceTree = SDKROOT; };
+		15E660A2CC748AB669F107CE /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		17181C20AAB12F958CE70F03 /* Talkshot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Talkshot.entitlements; sourceTree = "<group>"; };
+		1C11F802C2932EA6EB9B8185 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		40134B747D13B8BC1CA8D755 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		46A3198C4771A0F520622B4D /* TalkshotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkshotApp.swift; sourceTree = "<group>"; };
+		6D548AF2196765AF9C43B410 /* AudioDeviceSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDeviceSelector.swift; sourceTree = "<group>"; };
+		6FFD723FA6DCB1425A22211E /* TranscriptionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptionService.swift; sourceTree = "<group>"; };
+		994E70EEBC2998BF14D105F5 /* PermissionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionsService.swift; sourceTree = "<group>"; };
+		BD4F9DED5C22298D21612152 /* SessionEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEntry.swift; sourceTree = "<group>"; };
+		BE7517B2091D6BCFDF8EF11C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		CD8D1066B6CDE2D0EF38E679 /* CaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureService.swift; sourceTree = "<group>"; };
+		D5217E8350447898795835D6 /* Talkshot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Talkshot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E11B305648147C1A0274FE6A /* HotkeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyService.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BD35ED528DE037BDC4FB9BDE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE5C5162A51F6DF9BA159025 /* ScreenCaptureKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0CF7FD9AB03D9A06BE3C6392 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BD4F9DED5C22298D21612152 /* SessionEntry.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1B2626D30B0F938F8AE95E09 /* Talkshot */ = {
+			isa = PBXGroup;
+			children = (
+				40134B747D13B8BC1CA8D755 /* AppState.swift */,
+				1C11F802C2932EA6EB9B8185 /* Assets.xcassets */,
+				BE7517B2091D6BCFDF8EF11C /* Info.plist */,
+				17181C20AAB12F958CE70F03 /* Talkshot.entitlements */,
+				46A3198C4771A0F520622B4D /* TalkshotApp.swift */,
+				0CF7FD9AB03D9A06BE3C6392 /* Models */,
+				5476656F014D19AF5EBAD62F /* Services */,
+			);
+			path = Talkshot;
+			sourceTree = "<group>";
+		};
+		50A3F3C64429B29A669C2AD6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D5217E8350447898795835D6 /* Talkshot.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5476656F014D19AF5EBAD62F /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				6D548AF2196765AF9C43B410 /* AudioDeviceSelector.swift */,
+				15E660A2CC748AB669F107CE /* AudioRecorder.swift */,
+				CD8D1066B6CDE2D0EF38E679 /* CaptureService.swift */,
+				E11B305648147C1A0274FE6A /* HotkeyService.swift */,
+				994E70EEBC2998BF14D105F5 /* PermissionsService.swift */,
+				6FFD723FA6DCB1425A22211E /* TranscriptionService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		828920A4E4E09BC0300A88FC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				152A506D42964E6AC268B549 /* ScreenCaptureKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A659FC6C962B723715FCDF5B = {
+			isa = PBXGroup;
+			children = (
+				1B2626D30B0F938F8AE95E09 /* Talkshot */,
+				828920A4E4E09BC0300A88FC /* Frameworks */,
+				50A3F3C64429B29A669C2AD6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0ED9E5E95C118B70BE982AA3 /* Talkshot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4DAE2A1B1762542247F73AC5 /* Build configuration list for PBXNativeTarget "Talkshot" */;
+			buildPhases = (
+				C24C4C5668D2DD3B50B142F7 /* Sources */,
+				4927815DE428C8570214B1F5 /* Resources */,
+				BD35ED528DE037BDC4FB9BDE /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Talkshot;
+			packageProductDependencies = (
+			);
+			productName = Talkshot;
+			productReference = D5217E8350447898795835D6 /* Talkshot.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F0BEAF281657DB00AF2EE4E3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 2177B5743D33A9CE2FF664D1 /* Build configuration list for PBXProject "Talkshot" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = A659FC6C962B723715FCDF5B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 50A3F3C64429B29A669C2AD6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0ED9E5E95C118B70BE982AA3 /* Talkshot */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4927815DE428C8570214B1F5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CF6AAECD6FDE6050F256EEB1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C24C4C5668D2DD3B50B142F7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F1AF3C573FFF48C691D4575D /* AppState.swift in Sources */,
+				406084D85BCB14323499BDD4 /* AudioDeviceSelector.swift in Sources */,
+				C32378C85BD6AA3F7D56DE55 /* AudioRecorder.swift in Sources */,
+				61102926F19C8B7666F098A5 /* CaptureService.swift in Sources */,
+				7A64031EFC499E19CA8AFE83 /* HotkeyService.swift in Sources */,
+				16FD9B5655A35D679C49B861 /* PermissionsService.swift in Sources */,
+				53EE766462DEAD0FF6421163 /* SessionEntry.swift in Sources */,
+				ADC3BB9FB1DD6D7A637693D8 /* TalkshotApp.swift in Sources */,
+				AEE20B7DA52C66A15872CE0E /* TranscriptionService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4047CCD4D83F4C16482DF2BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		8B9929502C666D90E7B16BF8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Talkshot/Talkshot.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Talkshot/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.talkshot.app;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		A67F35D0D2893FFF8CF5C8E9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		DF26909CF492929DA7EF868B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Talkshot/Talkshot.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Talkshot/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.talkshot.app;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2177B5743D33A9CE2FF664D1 /* Build configuration list for PBXProject "Talkshot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A67F35D0D2893FFF8CF5C8E9 /* Debug */,
+				4047CCD4D83F4C16482DF2BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4DAE2A1B1762542247F73AC5 /* Build configuration list for PBXNativeTarget "Talkshot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8B9929502C666D90E7B16BF8 /* Debug */,
+				DF26909CF492929DA7EF868B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F0BEAF281657DB00AF2EE4E3 /* Project object */;
+}

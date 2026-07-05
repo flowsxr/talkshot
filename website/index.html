@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Talkshot, Push-to-talk visual notes for AI coding agents</title>
+  <meta name="description" content="Talkshot lives in your macOS menu bar. Screenshot what you're looking at, say what's wrong, and hand structured context to your AI coding agent, all on-device, nothing leaves your Mac.">
+  <meta name="keywords" content="developer tools, screen recording, AI feedback, voice notes, screenshot, AI agents, Claude Code, Cursor, Windsurf, open source, macOS, menu bar, on-device, transcription, privacy">
+  <meta name="author" content="FLOWXR PTE. LTD.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0a0a0a">
+
+  <link rel="canonical" href="https://github.com/flowsxr/talkshot">
+  <link rel="icon" type="image/png" href="assets/icon.png">
+  <link rel="apple-touch-icon" href="assets/icon.png">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Talkshot, Push-to-talk visual notes for AI coding agents">
+  <meta property="og:description" content="Screenshot what you're looking at, say what's wrong with it, and hand structured context to your AI coding assistant. All on-device, nothing leaves your Mac.">
+  <meta property="og:url" content="https://github.com/flowsxr/talkshot">
+  <meta property="og:site_name" content="Talkshot">
+  <meta property="og:image" content="https://raw.githubusercontent.com/flowsxr/talkshot/main/website/assets/icon.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Talkshot, Push-to-talk visual notes for AI coding agents">
+  <meta name="twitter:description" content="Screenshot what you're looking at, say what's wrong, and hand structured context to your AI coding agent. All on-device.">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/flowsxr/talkshot/main/website/assets/icon.png">
+
+  <style>
+    /* ========================================
+       RESET
+       ======================================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ========================================
+       CUSTOM PROPERTIES, DARK MODE (default)
+       ======================================== */
+    :root {
+      color-scheme: dark light;
+
+      /* Typography */
+      --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+      --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', ui-monospace, monospace;
+
+      /* Colors, Dark (default) — plain black and white */
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #141414;
+      --bg-tertiary: #1f1f1f;
+      --text-primary: #ffffff;
+      --text-secondary: #a3a3a3;
+      --text-tertiary: #737373;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+
+      /* Accent — same monochrome scale, no hue */
+      --accent: #ffffff;
+      --accent-hover: #d4d4d4;
+      --accent-glow: rgba(255, 255, 255, 0.14);
+
+      /* Accent pop — spent in exactly two places: wordmark dot, announcement pill */
+      --accent-pop: #e9974f;
+      --accent-pop-hover: #f2ad6e;
+
+      /* Neo-brutalist shadows */
+      --shadow-sm: 2px 2px 0 rgba(255, 255, 255, 0.12);
+      --shadow-md: 4px 4px 0 rgba(255, 255, 255, 0.12);
+      --shadow-lg: 6px 6px 0 rgba(255, 255, 255, 0.12);
+
+      /* Syntax highlighting */
+      --syn-keyword: #C4B5FD;
+      --syn-string: #86EFAC;
+      --syn-function: #93C5FD;
+      --syn-comment: #525252;
+      --syn-operator: #F9A8D4;
+      --syn-default: #E5E5E5;
+
+      /* Spacing */
+      --section-gap: 160px;
+      --content-max: 720px;
+      --feature-max: 960px;
+      --side-pad: clamp(1.25rem, 5vw, 2.5rem);
+    }
+
+    /* ========================================
+       LIGHT MODE (system preference override)
+       ======================================== */
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f5f5f5;
+        --bg-tertiary: #ebebeb;
+        --text-primary: #0a0a0a;
+        --text-secondary: #525252;
+        --text-tertiary: #737373;
+        --border: rgba(0, 0, 0, 0.08);
+        --border-strong: rgba(0, 0, 0, 0.16);
+
+        --accent: #0a0a0a;
+        --accent-hover: #2e2e2e;
+        --accent-glow: rgba(0, 0, 0, 0.08);
+
+        --accent-pop: #b75f22;
+        --accent-pop-hover: #96501f;
+
+        --shadow-sm: 2px 2px 0 var(--text-primary);
+        --shadow-md: 4px 4px 0 var(--text-primary);
+        --shadow-lg: 6px 6px 0 var(--text-primary);
+      }
+    }
+
+    /* ========================================
+       BASE
+       ======================================== */
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 17px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      background-color: var(--bg-primary);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background-color: var(--accent);
+      color: var(--bg-primary);
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 150ms ease;
+    }
+
+    a:hover { color: var(--accent-hover); }
+    img { max-width: 100%; display: block; }
+
+    /* ========================================
+       TYPOGRAPHY
+       ======================================== */
+    h1, h2, h3, h4 {
+      color: var(--text-primary);
+      font-weight: 800;
+      text-wrap: balance;
+    }
+
+    .display {
+      font-size: clamp(36px, 7vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      font-weight: 900;
+    }
+
+    h2 {
+      font-size: clamp(28px, 4vw, 44px);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    h3 {
+      font-size: clamp(20px, 3vw, 24px);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    .overline {
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-pop);
+    }
+
+    .body-lg {
+      font-size: clamp(17px, 2.5vw, 20px);
+      line-height: 1.6;
+    }
+
+    .body-sm { font-size: 15px; line-height: 1.6; }
+
+    .caption {
+      font-size: 13px;
+      line-height: 1.5;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--text-tertiary);
+    }
+
+    /* ========================================
+       LAYOUT
+       ======================================== */
+    .container {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      padding-left: var(--side-pad);
+      padding-right: var(--side-pad);
+    }
+
+    .container--wide {
+      max-width: var(--feature-max);
+      margin: 0 auto;
+      padding-left: var(--side-pad);
+      padding-right: var(--side-pad);
+    }
+
+    section {
+      padding-top: var(--section-gap);
+      padding-bottom: var(--section-gap);
+    }
+
+    @media (max-width: 768px) {
+      :root { --section-gap: 96px; }
+    }
+
+    .divider {
+      border: none;
+      height: 3px;
+      background: var(--text-primary);
+      margin: 0;
+      opacity: 0.12;
+    }
+
+    @media (prefers-color-scheme: light) {
+      .divider { opacity: 0.08; }
+    }
+
+    /* ========================================
+       WORDMARK
+       ======================================== */
+    .wordmark {
+      font-family: var(--font-sans);
+      font-weight: 900;
+      font-size: 28px;
+      letter-spacing: -0.04em;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .wordmark-dot {
+      color: var(--accent-pop);
+      font-size: 36px;
+      line-height: 1;
+    }
+
+    .wordmark-icon {
+      vertical-align: middle;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    /* ========================================
+       BUTTONS, Neo-Brutalist, Tactile
+       ======================================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1;
+      border: 3px solid var(--text-primary);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: transform 150ms ease-out, box-shadow 150ms ease-out, background-color 150ms ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn--primary {
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn--primary:hover {
+      transform: translate(2px, 2px);
+      box-shadow: var(--shadow-sm);
+      color: var(--bg-primary);
+    }
+
+    .btn--primary:active {
+      transform: translate(4px, 4px);
+      box-shadow: none;
+    }
+
+    .btn--secondary {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn--secondary:hover {
+      transform: translate(2px, 2px);
+      box-shadow: var(--shadow-sm);
+      color: var(--text-primary);
+    }
+
+    .btn--secondary:active {
+      transform: translate(4px, 4px);
+      box-shadow: none;
+    }
+
+    .btn--accent {
+      background: var(--accent);
+      color: var(--bg-primary);
+      border-color: var(--text-primary);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn--accent:hover {
+      transform: translate(2px, 2px);
+      box-shadow: var(--shadow-sm);
+      background: var(--accent-hover);
+      color: var(--bg-primary);
+    }
+
+    .btn--accent:active {
+      transform: translate(4px, 4px);
+      box-shadow: none;
+    }
+
+    .btn:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    /* ========================================
+       KBD, Keyboard Shortcut Badges
+       ======================================== */
+    kbd {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      padding: 4px 10px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      background: var(--bg-tertiary);
+      border: 2px solid var(--text-primary);
+      border-radius: 4px;
+      box-shadow: var(--shadow-sm);
+      line-height: 1.4;
+    }
+
+    .kbd-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .kbd-plus {
+      color: var(--text-tertiary);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* ========================================
+       CARDS, Neo-Brutalist
+       ======================================== */
+    .card {
+      background: var(--bg-secondary);
+      border: 3px solid var(--text-primary);
+      border-radius: 4px;
+      padding: 32px;
+      box-shadow: var(--shadow-lg);
+      transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+    }
+
+    .card:hover {
+      transform: translate(2px, 2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ========================================
+       SCROLL REVEAL
+       ======================================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 500ms cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 500ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .reveal-delay-1 { transition-delay: 75ms; }
+    .reveal-delay-2 { transition-delay: 150ms; }
+    .reveal-delay-3 { transition-delay: 225ms; }
+    .reveal-delay-4 { transition-delay: 300ms; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ========================================
+       HERO
+       ======================================== */
+    .hero {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 96px var(--side-pad);
+    }
+
+    .hero__wordmark {
+      font-size: clamp(32px, 5vw, 40px);
+      margin-bottom: 32px;
+    }
+
+    .hero__announcement {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-pop);
+      border: 2px solid var(--accent-pop);
+      border-radius: 4px;
+      margin-bottom: 32px;
+      transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+    }
+
+    .hero__announcement:hover {
+      background: var(--accent-pop-hover);
+      border-color: var(--accent-pop-hover);
+      color: var(--bg-primary);
+    }
+
+    .hero__announcement-arrow {
+      font-size: 14px;
+      transition: transform 150ms ease;
+    }
+
+    .hero__announcement:hover .hero__announcement-arrow {
+      transform: translateX(2px);
+    }
+
+    .hero__headline {
+      max-width: 700px;
+      margin-bottom: 24px;
+    }
+
+    .hero__subtext {
+      max-width: 560px;
+      margin-bottom: 48px;
+      color: var(--text-secondary);
+    }
+
+    .hero__ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .hero__shortcut {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-tertiary);
+    }
+
+    .hero__shortcut-label {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+      .hero__ctas { flex-direction: column; align-items: center; }
+      .hero__ctas .btn { width: 100%; justify-content: center; }
+    }
+
+    /* ========================================
+       CORE LOOP, HOW IT WORKS
+       ======================================== */
+    .loop { background: var(--bg-secondary); }
+
+    .loop__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: var(--feature-max);
+      margin: 0 auto;
+    }
+
+    .loop__step {
+      text-align: center;
+      position: relative;
+    }
+
+    .loop__icon-box {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid var(--text-primary);
+      border-radius: 4px;
+      box-shadow: var(--shadow-md);
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .loop__icon-box svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .loop__label {
+      font-family: var(--font-mono);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .loop__desc {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-tertiary);
+    }
+
+    .loop__role {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      height: 20px;
+    }
+
+    .loop__role--you { color: var(--accent-pop); }
+    .loop__role--auto { color: var(--text-tertiary); }
+
+    .loop__step--auto .loop__icon-box {
+      opacity: 0.45;
+      border-style: dashed;
+      box-shadow: none;
+    }
+
+    .loop__step--auto .loop__label {
+      color: var(--text-secondary);
+    }
+
+    .loop__step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 56px;
+      right: -14px;
+      width: 8px;
+      height: 8px;
+      border-right: 3px solid var(--text-primary);
+      border-bottom: 3px solid var(--text-primary);
+      transform: rotate(-45deg);
+      opacity: 0.3;
+    }
+
+    /* Keystroke flow */
+    .keystroke-flow {
+      max-width: var(--feature-max);
+      margin: 56px auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+
+    .keystroke-flow__step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      padding: 0 clamp(12px, 3vw, 32px);
+    }
+
+    .keystroke-flow__keys {
+      font-family: var(--font-mono);
+      font-size: clamp(18px, 3.5vw, 28px);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .keystroke-flow__label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+    }
+
+    .keystroke-flow__arrow {
+      font-size: clamp(18px, 3vw, 24px);
+      color: var(--text-tertiary);
+      opacity: 0.4;
+      padding: 0 4px;
+      margin-top: -20px;
+    }
+
+    .keystroke-flow__ellipsis {
+      font-family: var(--font-mono);
+      font-size: clamp(18px, 3.5vw, 28px);
+      font-weight: 700;
+      color: var(--text-tertiary);
+      letter-spacing: 0.15em;
+      padding: 0 clamp(4px, 1.5vw, 12px);
+      margin-top: -20px;
+    }
+
+    @media (max-width: 640px) {
+      .loop__grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .loop__step:not(:last-child)::after { display: none; }
+    }
+
+    @media (max-width: 400px) {
+      .loop__grid { grid-template-columns: 1fr; gap: 40px; }
+      .loop__role { height: auto; }
+    }
+
+    /* ========================================
+       WHY IT MATTERS
+       ======================================== */
+    .why__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      max-width: var(--feature-max);
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .why__grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .why__card h3 {
+      margin-bottom: 16px;
+      font-size: clamp(18px, 2.5vw, 22px);
+      line-height: 1.25;
+    }
+
+    .why__card p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    /* ========================================
+       UNDER THE HOOD / TECHNICAL
+       ======================================== */
+    .tech { background: var(--bg-secondary); }
+
+    .tech__content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 64px;
+      max-width: var(--feature-max);
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .tech__content { grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    }
+
+    .tech__bullets { list-style: none; }
+
+    .tech__bullets li {
+      padding: 16px 0;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .tech__bullets li:first-child { padding-top: 0; }
+
+    .tech__bullets strong {
+      color: var(--text-primary);
+      font-weight: 700;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+
+    .tech__bullets span {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #0a0a0a;
+      border: 3px solid var(--text-primary);
+      border-radius: 4px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .code-block__header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .code-block__dot { width: 10px; height: 10px; border-radius: 50%; }
+    .code-block__dot--red { background: #FF5F57; }
+    .code-block__dot--yellow { background: #FEBC2E; }
+    .code-block__dot--green { background: #28C840; }
+
+    .code-block__title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #666;
+      margin-left: 8px;
+    }
+
+    .code-block pre {
+      padding: 24px 20px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--syn-default);
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .code-block pre code { font-family: inherit; }
+
+    .syn-kw { color: var(--syn-keyword); }
+    .syn-str { color: var(--syn-string); }
+    .syn-fn { color: var(--syn-function); }
+    .syn-cm { color: var(--syn-comment); }
+    .syn-op { color: var(--syn-operator); }
+
+    /* ========================================
+       BUILD / INSTALL SECTION
+       ======================================== */
+    .build { background: var(--bg-primary); }
+
+    .build__content {
+      max-width: var(--feature-max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    @media (min-width: 768px) {
+      .build__content { grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    }
+
+    .build__text p {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .build__text p:last-child { margin-bottom: 0; }
+
+    /* Terminal */
+    .terminal {
+      background: #0a0a0a;
+      border: 3px solid var(--text-primary);
+      border-radius: 4px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+    }
+
+    .terminal__header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .terminal__dot { width: 10px; height: 10px; border-radius: 50%; }
+    .terminal__dot--red { background: #FF5F57; }
+    .terminal__dot--yellow { background: #FEBC2E; }
+    .terminal__dot--green { background: #28C840; }
+
+    .terminal__title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: #666;
+      margin-left: 8px;
+    }
+
+    .terminal__body {
+      padding: 24px 20px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: 1.8;
+      color: #E5E5E5;
+    }
+
+    .terminal__prompt { color: #86EFAC; user-select: none; }
+    .terminal__command { color: #93C5FD; }
+    .terminal__line { margin-bottom: 12px; }
+    .terminal__line:last-child { margin-bottom: 0; }
+    .terminal__comment {
+      color: #666666;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* ========================================
+       SESSION OUTPUT
+       ======================================== */
+    .output { background: var(--bg-secondary); }
+
+    .output__content {
+      max-width: var(--feature-max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    @media (min-width: 768px) {
+      .output__content { grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+    }
+
+    .output__files {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .output__file {
+      padding: 16px 20px;
+      border: 2px solid var(--border-strong);
+      border-radius: 4px;
+      background: var(--bg-primary);
+      transition: border-color 150ms ease;
+    }
+
+    .output__file:hover { border-color: var(--accent); }
+
+    .output__file strong {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .output__file span {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+
+    /* ========================================
+       FEATURES GRID
+       ======================================== */
+    .features {
+      background: var(--bg-primary);
+    }
+
+    .features__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      max-width: var(--feature-max);
+      margin: 48px auto 0;
+    }
+
+    @media (min-width: 768px) {
+      .features__grid { grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .features__card h3 {
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .features__card p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+
+    /* ========================================
+       FAQ, Accordion
+       ======================================== */
+    .faq { background: var(--bg-secondary); }
+
+    .faq__list {
+      max-width: var(--content-max);
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .faq__item {
+      border-bottom: 2px solid var(--border);
+    }
+
+    .faq__item:first-child { border-top: 2px solid var(--border); }
+
+    .faq__item summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 0;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text-primary);
+      cursor: pointer;
+      list-style: none;
+      transition: color 150ms ease;
+    }
+
+    .faq__item summary::-webkit-details-marker { display: none; }
+    .faq__item summary::marker { display: none; content: ''; }
+
+    .faq__item summary::after {
+      content: '+';
+      flex-shrink: 0;
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      transition: color 150ms ease;
+    }
+
+    .faq__item[open] summary::after {
+      content: '\2212';
+      color: var(--accent);
+    }
+
+    .faq__item summary:hover { color: var(--accent); }
+
+    .faq__answer {
+      padding: 0 0 20px;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    .faq__answer code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 2px 6px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+    }
+
+    /* ========================================
+       SECTION HEADERS (centered)
+       ======================================== */
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-header .overline { margin-bottom: 16px; }
+
+    .section-header h2 { margin-bottom: 16px; }
+
+    .section-header p {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* ========================================
+       FOOTER
+       ======================================== */
+    .footer {
+      padding: 48px var(--side-pad);
+      text-align: center;
+    }
+
+    .footer__divider {
+      height: 3px;
+      background: var(--text-primary);
+      opacity: 0.12;
+      margin-bottom: 48px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      .footer__divider { opacity: 0.08; }
+    }
+
+    .footer__links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .footer__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 150ms ease;
+    }
+
+    .footer__link:hover { color: var(--text-primary); }
+
+    .footer__link svg { width: 18px; height: 18px; }
+
+    .footer__license {
+      font-size: 14px;
+      color: var(--text-tertiary);
+      margin-bottom: 8px;
+    }
+
+    .footer__built {
+      font-size: 14px;
+      color: var(--text-tertiary);
+    }
+
+    /* ========================================
+       SKIP LINK
+       ======================================== */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      z-index: 9999;
+      padding: 12px 24px;
+      background: var(--accent);
+      color: var(--bg-primary);
+      font-weight: 700;
+      border-radius: 4px;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .skip-link:focus { top: 16px; color: var(--bg-primary); }
+
+    /* ========================================
+       SCREEN READER ONLY
+       ======================================== */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ========================================
+       FOCUS-VISIBLE (keyboard navigation)
+       ======================================== */
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    /* ========================================
+       UTILITIES
+       ======================================== */
+    .text-center { text-align: center; }
+
+    /* ========================================
+       INLINE CODE
+       ======================================== */
+    code {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      padding: 2px 6px;
+      background: var(--bg-tertiary);
+      border-radius: 3px;
+      color: var(--accent);
+    }
+
+    /* ========================================
+       INTEGRATIONS SECTION
+       ======================================== */
+    .integrations { background: var(--bg-primary); }
+
+    .integrations__grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      max-width: var(--feature-max);
+      margin: 0 auto;
+    }
+
+    @media (min-width: 768px) {
+      .integrations__grid { grid-template-columns: 1fr 1fr; gap: 48px; }
+    }
+
+    .integrations__card {
+      padding: 24px 28px;
+      border: 2px solid var(--border-strong);
+      border-radius: 4px;
+      background: var(--bg-secondary);
+      transition: border-color 150ms ease;
+    }
+
+    .integrations__card:hover { border-color: var(--accent); }
+
+    .integrations__card h3 {
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    .integrations__card p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-secondary);
+    }
+  </style>
+
+  <!-- Noscript fallback -->
+  <noscript>
+    <style>
+      .reveal { opacity: 1; transform: none; }
+    </style>
+  </noscript>
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to content</a>
+
+  <main id="main-content">
+
+  <!-- ==========================================
+       HERO
+       ========================================== -->
+  <section class="hero" aria-label="Hero">
+    <div class="wordmark hero__wordmark" aria-label="Talkshot">
+      <img class="wordmark-icon" width="36" height="36" src="assets/icon.png" alt="" aria-hidden="true">
+      Talksh<span class="wordmark-dot">●</span>t
+    </div>
+
+    <a href="https://github.com/flowsxr/talkshot" class="hero__announcement" target="_blank" rel="noopener noreferrer">
+      Native Swift app + Python CLI, both MIT licensed <span class="hero__announcement-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <h1 class="display hero__headline">
+      You see it. You say it.<br>Your AI acts on it.
+    </h1>
+
+    <p class="body-lg hero__subtext">
+      Talkshot lives in your macOS menu bar. Screenshot what you're looking at, cursor circled in red, narrate the issue, and get structured, timestamped Markdown your AI coding agent can execute against immediately. All on-device. Nothing leaves your Mac.
+    </p>
+
+    <div class="hero__ctas">
+      <a href="https://github.com/flowsxr/talkshot" class="btn btn--primary" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+        View on GitHub<span class="sr-only"> (opens in new tab)</span>
+      </a>
+      <a href="#build" class="btn btn--secondary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+        Build from source
+      </a>
+    </div>
+
+    <div class="hero__shortcut">
+      <span class="hero__shortcut-label">Start with</span>
+      <span class="kbd-group">
+        <kbd>Ctrl</kbd><span class="kbd-plus">+</span><kbd>Option</kbd><span class="kbd-plus">+</span><kbd>N</kbd>
+      </span>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       HOW IT WORKS
+       ========================================== -->
+  <section class="loop" aria-label="How it works">
+    <div class="section-header reveal">
+      <p class="overline">How it works</p>
+      <h2>Three steps from bug report to AI fix.</h2>
+      <p class="body-sm">Record your screen and voice in one motion. Talkshot handles the rest.</p>
+    </div>
+
+    <div class="loop__grid">
+      <div class="loop__step reveal reveal-delay-1">
+        <div class="loop__role loop__role--you">You</div>
+        <div class="loop__icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+        </div>
+        <div class="loop__label">Screenshot + record</div>
+        <div class="loop__desc">Hit the hotkey once. Screen shot taken, cursor circled, mic recording starts, all in one motion.</div>
+      </div>
+
+      <div class="loop__step loop__step--auto reveal reveal-delay-2">
+        <div class="loop__role loop__role--auto">Talkshot</div>
+        <div class="loop__icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        </div>
+        <div class="loop__label">Transcribe + structure</div>
+        <div class="loop__desc">On-device transcription via Apple's Speech framework. Screenshot, crop, cursor position, transcript, all aligned by timestamp.</div>
+      </div>
+
+      <div class="loop__step reveal reveal-delay-3">
+        <div class="loop__role loop__role--you">You</div>
+        <div class="loop__icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+        </div>
+        <div class="loop__label">Paste into your agent</div>
+        <div class="loop__desc">Open the session folder, drag <code>notes.md</code> into Claude Code or Cursor. Your agent sees what you saw, reads what you said.</div>
+      </div>
+    </div>
+
+    <!-- Keystroke flow -->
+    <div class="keystroke-flow reveal reveal-delay-4">
+      <div class="keystroke-flow__step">
+        <div class="keystroke-flow__keys">Ctrl+Opt+N</div>
+        <div class="keystroke-flow__label">start</div>
+      </div>
+      <div class="keystroke-flow__arrow">→</div>
+      <div class="keystroke-flow__step">
+        <div class="keystroke-flow__keys">talk</div>
+        <div class="keystroke-flow__label">narrate</div>
+      </div>
+      <div class="keystroke-flow__arrow">→</div>
+      <div class="keystroke-flow__step">
+        <div class="keystroke-flow__keys">Ctrl+Opt+N</div>
+        <div class="keystroke-flow__label">stop</div>
+      </div>
+      <div class="keystroke-flow__arrow">→</div>
+      <div class="keystroke-flow__step">
+        <div class="keystroke-flow__keys">Ctrl+Opt+E</div>
+        <div class="keystroke-flow__label">finish session</div>
+      </div>
+      <div class="keystroke-flow__arrow">→</div>
+      <div class="keystroke-flow__step">
+        <div class="keystroke-flow__keys">⌘V</div>
+        <div class="keystroke-flow__label">paste into agent</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       WHY IT MATTERS
+       ========================================== -->
+  <section aria-label="Why it matters">
+    <div class="section-header reveal">
+      <p class="overline">Why it matters</p>
+      <h2>Feedback without the friction.</h2>
+    </div>
+
+    <div class="why__grid">
+      <div class="card why__card reveal reveal-delay-1">
+        <h3>Stop retyping what you already see.</h3>
+        <p>Screenshots alone lose intent ("what's wrong with this?"). Voice notes alone lose visual context. Talkshot captures both, cursor position, cropped region, and your spoken note, so your AI agent gets the same context a human coworker would.</p>
+      </div>
+
+      <div class="card why__card reveal reveal-delay-2">
+        <h3>Faster than typing out a bug report.</h3>
+        <p>You talk at ~150 words per minute. You type at ~60. A two-minute narration gives your AI agent more precise context than ten minutes of writing. Hit the hotkey, say what's wrong, move on.</p>
+      </div>
+
+      <div class="card why__card reveal reveal-delay-3">
+        <h3>Everything stays on your Mac.</h3>
+        <p>Apple's Speech framework runs entirely on-device. No cloud, no API keys, no telemetry. The screenshots never leave your disk. Talkshot is a native macOS app, no Electron, no browser, no network calls.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       TECHNICAL DETAILS
+       ========================================== -->
+  <section class="tech" aria-label="Technical details">
+    <div class="section-header reveal">
+      <p class="overline">Under the hood</p>
+      <h2>Built for developers who read source.</h2>
+    </div>
+
+    <div class="tech__content">
+      <ul class="tech__bullets reveal reveal-delay-1">
+        <li>
+          <strong>ScreenCaptureKit (macOS 14+)</strong>
+          <span>High-performance screen capture with proper permission handling. No subprocess <code>screencapture</code> hacks, direct framebuffer access.</span>
+        </li>
+        <li>
+          <strong>On-device transcription</strong>
+          <span>Apple's Speech framework for local, private transcription. Also supports <code>mlx-whisper</code> via the Python CLI for larger model options.</span>
+        </li>
+        <li>
+          <strong>Cursor-aware captures</strong>
+          <span>Every screenshot draws a red circle at your cursor position. A cropped, zoomed region around the cursor is saved alongside the full screen, your agent knows exactly where you were pointing.</span>
+        </li>
+        <li>
+          <strong>Structured Markdown output</strong>
+          <span>Each note is a self-contained record: timestamp, cursor position (points + pixels), full screenshot, cropped region, and transcribed text. Ready for any LLM to consume.</span>
+        </li>
+        <li>
+          <strong>Menu bar native</strong>
+          <span>SwiftUI MenuBarExtra app. No dock icon. No browser tab. Respects macOS dark/light mode automatically.</span>
+        </li>
+      </ul>
+
+      <div class="reveal reveal-delay-2">
+        <div class="code-block">
+          <div class="code-block__header">
+            <div class="code-block__dot code-block__dot--red"></div>
+            <div class="code-block__dot code-block__dot--yellow"></div>
+            <div class="code-block__dot code-block__dot--green"></div>
+            <span class="code-block__title">notes.md</span>
+          </div>
+          <pre><code><span class="syn-cm"># Session 20260704-142141</span>
+
+<span class="syn-cm">## Note 1 (2026-07-04T14:22:03Z)</span>
+<span class="syn-cm">Cursor at [847, 392] (screen points)</span>
+
+<span class="syn-cm">![full](shot_001.png)</span>
+
+<span class="syn-cm">![zoom](crop_001.png)</span>
+
+&gt; The login button on mobile is way too small.
+&gt; The tap target overlaps with the "Forgot
+&gt; password" link, users keep hitting the wrong
+&gt; thing. Should have at least 44px height.
+
+<span class="syn-cm">## Note 2 (2026-07-04T14:23:15Z)</span>
+<span class="syn-cm">Cursor at [120, 560] (screen points)</span>
+
+<span class="syn-cm">![full](shot_002.png)</span>
+
+<span class="syn-cm">![zoom](crop_002.png)</span>
+
+&gt; The nav highlight is stuck on Dashboard
+&gt; even though I'm on Settings. Active state
+&gt; isn't updating on route change.</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       BUILD FROM SOURCE
+       ========================================== -->
+  <section class="build" id="build" aria-label="Build from source">
+    <div class="section-header reveal">
+      <p class="overline">Get started</p>
+      <h2>Build from your terminal.</h2>
+    </div>
+
+    <div class="build__content">
+      <div class="build__text reveal reveal-delay-1">
+        <p>Talkshot is a native Swift app that builds clean with <code>xcodegen</code>. The default build produces a locally-signed app, fine for running on your own Mac. For distribution, a separate release build pipeline handles Developer ID signing and notarization.</p>
+        <p>Also included: a Python CLI (<code>talkshot.py</code>) that does the same thing without the native menu bar UI. Useful for scripting, or if you want to swap in a different transcription model like <code>mlx-whisper</code>.</p>
+      </div>
+
+      <div class="terminal reveal reveal-delay-2">
+        <div class="terminal__header">
+          <div class="terminal__dot terminal__dot--red"></div>
+          <div class="terminal__dot terminal__dot--yellow"></div>
+          <div class="terminal__dot terminal__dot--green"></div>
+          <span class="terminal__title">Terminal, zsh</span>
+        </div>
+        <div class="terminal__body">
+          <div class="terminal__line">
+            <span class="terminal__prompt">~ $</span>
+            <span class="terminal__command"> git clone https://github.com/flowsxr/talkshot.git && cd talkshot</span>
+          </div>
+          <div class="terminal__line">
+            <span class="terminal__prompt">~/talkshot $</span>
+            <span class="terminal__command"> brew install xcodegen</span>
+          </div>
+          <div class="terminal__line">
+            <span class="terminal__prompt">~/talkshot $</span>
+            <span class="terminal__command"> cd native && ./build.sh</span>
+          </div>
+          <div class="terminal__comment">
+            <span class="syn-cm"># Building Talkshot.app...</span><br>
+            <span class="syn-cm"># Done → native/dist/Talkshot.app</span><br>
+            <span class="syn-cm"># Grant Screen Recording +</span><br>
+            <span class="syn-cm"># Microphone + Accessibility</span><br>
+            <span class="syn-cm"># when prompted. Then:</span>
+          </div>
+          <div class="terminal__line">
+            <span class="terminal__prompt">~/talkshot $</span>
+            <span class="terminal__command"> open native/dist/Talkshot.app</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       SESSION OUTPUT
+       ========================================== -->
+  <section class="output" aria-label="Session output">
+    <div class="section-header reveal">
+      <p class="overline">Session output</p>
+      <h2>Structured, timestamped, agent-ready.</h2>
+      <p class="body-sm">Every session is a self-contained folder on your Desktop. Drag any file into your AI coding agent.</p>
+    </div>
+
+    <div class="output__content">
+      <div class="reveal reveal-delay-1">
+        <div class="code-block">
+          <div class="code-block__header">
+            <div class="code-block__dot code-block__dot--red"></div>
+            <div class="code-block__dot code-block__dot--yellow"></div>
+            <div class="code-block__dot code-block__dot--green"></div>
+            <span class="code-block__title">Session folder structure</span>
+          </div>
+          <pre><code>talkshot-session-20260704-142141/
+├── <span class="syn-str">shot_001.png</span>      <span class="syn-cm"># full screen, cursor circled</span>
+├── <span class="syn-str">crop_001.png</span>      <span class="syn-cm"># zoomed region around cursor</span>
+├── <span class="syn-str">shot_002.png</span>      <span class="syn-cm"># next note</span>
+├── <span class="syn-str">crop_002.png</span>
+├── <span class="syn-str">notes.json</span>        <span class="syn-cm"># structured entries</span>
+└── <span class="syn-str">notes.md</span>          <span class="syn-cm"># paste this into your agent</span></code></pre>
+        </div>
+      </div>
+
+      <div class="output__files reveal reveal-delay-2">
+        <div class="output__file">
+          <strong>notes.json</strong>
+          <span>Machine-readable. Each entry has a timestamp, cursor position (points + pixels), full screenshot path, cropped region path, and transcribed text. Integrate with anything that reads JSON.</span>
+        </div>
+        <div class="output__file">
+          <strong>notes.md</strong>
+          <span>Human-readable Markdown. Section headings per note, inline cursor coordinates, embedded screenshot references. Built for AI coding agents, paste it directly into Claude Code, Cursor, Windsurf, or Copilot.</span>
+        </div>
+        <div class="output__file">
+          <strong>shot_N.png / crop_N.png</strong>
+          <span>Full-screen capture with a red circle at your cursor, plus a zoomed crop of the area around it. Your agent sees both the big picture and the detail.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       INTEGRATIONS
+       ========================================== -->
+  <section class="integrations" aria-label="Integrations">
+    <div class="section-header reveal">
+      <p class="overline">Integrations</p>
+      <h2>Works where your agents work.</h2>
+    </div>
+
+    <div class="integrations__grid">
+      <div class="integrations__card reveal reveal-delay-1">
+        <h3>Claude Code</h3>
+        <p>Paste <code>notes.md</code> straight into a Claude Code session. Claude reads the timestamped screenshots and transcripts as structured context, no more "the thing next to the other thing."</p>
+      </div>
+      <div class="integrations__card reveal reveal-delay-1">
+        <h3>Cursor & Windsurf</h3>
+        <p>Drop the session folder into your project. Cursor and Windsurf read Markdown natively, they see your screenshots inline with your notes.</p>
+      </div>
+      <div class="integrations__card reveal reveal-delay-2">
+        <h3>GitHub Copilot</h3>
+        <p>Copy <code>notes.md</code> content into a Copilot Chat prompt. Screenshot references and cursor positions give Copilot the visual context it needs to suggest accurate fixes.</p>
+      </div>
+      <div class="integrations__card reveal reveal-delay-2">
+        <h3>GitHub Issues & Linear</h3>
+        <p>The structured Markdown works as a bug report out of the box. Paste into GitHub Issues or Linear, screenshots, cursor positions, and transcripts are all there.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       FEATURES
+       ========================================== -->
+  <section class="features" aria-label="Key features">
+    <div class="section-header reveal">
+      <p class="overline">Features</p>
+      <h2>Everything you need. Nothing you don't.</h2>
+    </div>
+
+    <div class="features__grid">
+      <div class="card features__card reveal reveal-delay-1">
+        <h3>Menu bar native</h3>
+        <p>Lives in your menu bar. No dock icon, no browser tab, no Electron. Pure SwiftUI MenuBarExtra, lightweight and always available.</p>
+      </div>
+      <div class="card features__card reveal reveal-delay-2">
+        <h3>Cursor-aware screenshots</h3>
+        <p>Red circle drawn at your cursor position. Cropped, zoomed region around the cursor saved alongside the full screen. Your agent knows exactly where you pointed.</p>
+      </div>
+      <div class="card features__card reveal reveal-delay-3">
+        <h3>On-device transcription</h3>
+        <p>Apple's Speech framework runs entirely locally. No cloud, no API keys, no data leaving your Mac. Python CLI also supports <code>mlx-whisper</code> for larger models.</p>
+      </div>
+      <div class="card features__card reveal reveal-delay-1">
+        <h3>Session management</h3>
+        <p>Multiple notes per session. Each note is a complete record, screenshot, crop, cursor position, transcript. Finish the session and it saves everything, opens the folder, starts fresh.</p>
+      </div>
+      <div class="card features__card reveal reveal-delay-2">
+        <h3>Global hotkeys</h3>
+        <p><kbd>Ctrl+Option+N</kbd> to take a note, <kbd>Ctrl+Option+E</kbd> to finish the session. Works from any app. Also available from the menu bar if you prefer clicking.</p>
+      </div>
+      <div class="card features__card reveal reveal-delay-3">
+        <h3>MIT licensed</h3>
+        <p>Free as in freedom, free as in beer. No telemetry, no tracking, no analytics. The full source is on GitHub. Use it, fork it, ship it.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       FAQ
+       ========================================== -->
+  <section class="faq" aria-label="Frequently asked questions">
+    <div class="section-header reveal">
+      <p class="overline">FAQ</p>
+      <h2>Common questions.</h2>
+    </div>
+
+    <div class="faq__list">
+      <details class="faq__item reveal reveal-delay-1">
+        <summary>What is Talkshot?</summary>
+        <div class="faq__answer">
+          Talkshot is an open-source macOS tool that lives in your menu bar. Hit a hotkey, it screenshots your main display (cursor circled in red), crops the area around your cursor, starts recording your mic, and transcribes what you say. The result is a structured folder of screenshots, transcripts, and Markdown, built to be pasted straight into AI coding agents like Claude Code, Cursor, or Copilot.
+        </div>
+      </details>
+
+      <details class="faq__item reveal reveal-delay-1">
+        <summary>Does it need an internet connection?</summary>
+        <div class="faq__answer">
+          No. Everything runs on-device. Screenshots are captured via ScreenCaptureKit. Transcription uses Apple's Speech framework, it runs locally on your Mac's Neural Engine. Nothing uploads to the cloud, no API keys required, no telemetry. The Python CLI optionally supports <code>mlx-whisper</code> if you want a larger transcription model, still fully offline.
+        </div>
+      </details>
+
+      <details class="faq__item reveal reveal-delay-2">
+        <summary>How is this different from just taking a screenshot and typing a note?</summary>
+        <div class="faq__answer">
+          Screenshots alone lose <em>intent</em>, "what's wrong with this?" Typed notes alone lose <em>visual context</em>, "this thing, right here." Talkshot captures both, aligned by timestamp, with your cursor position baked into every frame. Your AI agent gets the same context a human looking over your shoulder would. Plus, you talk at 150 wpm and type at ~60, it's faster.
+        </div>
+      </details>
+
+      <details class="faq__item reveal reveal-delay-2">
+        <summary>What AI coding agents work with Talkshot?</summary>
+        <div class="faq__answer">
+          Any agent that can read Markdown and view images. Confirmed to work well with: Claude Code, Cursor, Windsurf, and GitHub Copilot. The structured <code>notes.md</code> output with inline screenshot references is designed to be pasted directly into any LLM chat interface. Also works great as a bug report format for GitHub Issues and Linear.
+        </div>
+      </details>
+
+      <details class="faq__item reveal reveal-delay-3">
+        <summary>What are the system requirements?</summary>
+        <div class="faq__answer">
+          macOS 14 (Sonoma) or later, Apple Silicon or Intel. To build from source you'll need Xcode 15+ and <a href="https://github.com/yonaskolb/XcodeGen" target="_blank" rel="noopener noreferrer">XcodeGen</a> (<code>brew install xcodegen</code>). The Python CLI works on Python 3.9+ with minimal dependencies.
+        </div>
+      </details>
+
+      <details class="faq__item reveal reveal-delay-3">
+        <summary>Is Talkshot free?</summary>
+        <div class="faq__answer">
+          Yes. Talkshot is MIT-licensed open source. No paid tiers, no premium features, no accounts. Build it yourself or grab the source from GitHub. If you find it useful, a star on the repo goes a long way.
+        </div>
+      </details>
+
+      <details class="faq__item reveal reveal-delay-4">
+        <summary>Does it support multiple displays?</summary>
+        <div class="faq__answer">
+          Currently Talkshot captures the main display (the one with the menu bar). Multi-display support, capturing whichever display the cursor is on, is on the roadmap. The cursor position is always recorded in absolute screen coordinates, so your agent still knows exactly where you were pointing regardless of which display you're on.
+        </div>
+      </details>
+
+      <details class="faq__item reveal reveal-delay-4">
+        <summary>Can I change the hotkeys?</summary>
+        <div class="faq__answer">
+          Yes. In the Swift app, hotkeys are configured in <code>HotkeyService.swift</code> under <code>HotkeyConfig</code>. In the Python CLI, they're at the top of <code>talkshot.py</code> under <code>HOTKEYS</code>. The default is <code>Ctrl+Option+N</code> for taking notes and <code>Ctrl+Option+E</code> for finishing sessions, chosen to avoid conflicts with Xcode and terminal shortcuts.
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ==========================================
+       FOOTER
+       ========================================== -->
+  <footer class="footer" aria-label="Footer">
+    <div class="footer__divider"></div>
+
+    <div class="footer__links">
+      <a href="https://github.com/flowsxr/talkshot" class="footer__link" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+        GitHub
+      </a>
+      <a href="https://flowsxr.com" class="footer__link" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        FlowsXR
+      </a>
+    </div>
+
+    <p class="footer__license">MIT License. Free as in freedom. Free as in beer.</p>
+    <p class="footer__built">Built by <a href="https://flowsxr.com" target="_blank" rel="noopener noreferrer">FLOWXR PTE. LTD.</a></p>
+    <p class="footer__built" style="margin-top: 8px;">macOS 14+ · Apple Silicon &amp; Intel · No telemetry</p>
+  </footer>
+
+  </main>
+
+  <!-- Scroll reveal -->
+  <script>
+    (function() {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+      );
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    })();
+  </script>
+
+</body>
+</html>

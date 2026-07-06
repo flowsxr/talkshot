@@ -5,7 +5,7 @@
 <h1 align="center">Talkshot</h1>
 
 <p align="center">
-  Push-to-talk visual notes for macOS — screenshot what you're looking at, say what's wrong with it, and hand the whole thing to your AI coding assistant.
+  Push-to-talk visual notes for macOS: screenshot what you're looking at, say what's wrong with it, and hand the whole thing to your AI coding assistant.
 </p>
 
 <p align="center">
@@ -27,10 +27,10 @@ Talkshot lives in your menu bar. Hit one hotkey and it:
 1. Takes a screenshot of your main display, with your cursor circled in red
 2. Saves a cropped, zoomed-in shot of the area around your cursor
 3. Starts recording your voice
-4. Hit the hotkey again to stop — it transcribes what you said **entirely on-device** (Apple's Speech framework, nothing leaves your Mac)
-5. Appends everything — screenshot, crop, cursor position, transcript — to a session folder on your Desktop
+4. Hit the hotkey again to stop: it transcribes what you said **entirely on-device** (Apple's Speech framework, nothing leaves your Mac)
+5. Appends everything (screenshot, crop, cursor position, transcript) to a session folder on your Desktop
 
-The result is a structured, timestamped log of exactly what you were looking at and exactly what you said about it — built to be pasted straight into Claude Code, Cursor, or any AI coding assistant as rich, unambiguous context. No more "the button on the left, no the other left, near the thing that's kind of blue."
+The result is a structured, timestamped log of exactly what you were looking at and exactly what you said about it, built to be pasted straight into Claude Code, Cursor, or any AI coding assistant as rich, unambiguous context. No more "the button on the left, no the other left, near the thing that's kind of blue."
 
 ## Why
 
@@ -52,14 +52,14 @@ Or build from source:
 cd native && ./build.sh
 ```
 
-This builds and launches Talkshot. On first run it'll ask for **Screen Recording**, **Microphone**, and **Accessibility** permissions — grant them once and you're set.
+This builds and launches Talkshot. On first run it'll ask for **Screen Recording**, **Microphone**, and **Accessibility** permissions. Grant them once and you're set.
 
 **Hotkeys:**
 
 | Shortcut | Action |
 |---|---|
 | `Ctrl+Option+N` | Take a note (press again to stop recording) |
-| `Ctrl+Option+E` | Finish session — saves, opens the folder, starts a fresh session |
+| `Ctrl+Option+E` | Finish session: saves, opens the folder, starts a fresh session |
 
 Everything's also available from the menu bar icon if you'd rather click than remember shortcuts.
 
@@ -90,7 +90,7 @@ cd native
 ./notarize.sh         # submits to Apple, staples the ticket, packages as a .dmg
 ```
 
-This requires a paid Apple Developer Program membership and a `Developer ID Application` certificate (Xcode → Settings → Accounts → Manage Certificates). See [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) for the full signing/notarization story, including some non-obvious gotchas (ad-hoc signing invalidates permission grants on every rebuild; plain `xcodebuild build` silently injects a debug entitlement that gets your notarization submission rejected — you need the `archive` + `-exportArchive` pipeline instead).
+This requires a paid Apple Developer Program membership and a `Developer ID Application` certificate (Xcode → Settings → Accounts → Manage Certificates). See [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md) for the full signing/notarization story, including some non-obvious gotchas (ad-hoc signing invalidates permission grants on every rebuild; plain `xcodebuild build` silently injects a debug entitlement that gets your notarization submission rejected, so you need the `archive` + `-exportArchive` pipeline instead).
 
 ## Python version
 
@@ -101,7 +101,7 @@ python3 -m pip install -r requirements.txt
 python3 talkshot.py
 ```
 
-Same hotkeys, same output format. The native Swift app is the recommended path going forward — proper macOS permission handling, a menu bar UI, and no Python environment to manage.
+Same hotkeys, same output format. The native Swift app is the recommended path going forward: proper macOS permission handling, a menu bar UI, and no Python environment to manage.
 
 ## Documentation
 
@@ -115,7 +115,7 @@ Same hotkeys, same output format. The native Swift app is the recommended path g
 
 ## Contributing
 
-Issues and PRs welcome. If you're fixing a permissions/signing issue, `docs/KNOWN_ISSUES.md` has the debugging history — please add to it rather than rediscovering the same TCC quirks from scratch.
+Issues and PRs welcome. If you're fixing a permissions/signing issue, `docs/KNOWN_ISSUES.md` has the debugging history; please add to it rather than rediscovering the same TCC quirks from scratch.
 
 ## License
 

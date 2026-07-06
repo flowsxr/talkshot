@@ -38,6 +38,16 @@ Screenshots alone lose intent ("what's wrong with this?"). Voice notes alone los
 
 ## Quick start
 
+Install via Homebrew:
+
+```bash
+brew install --cask flowsxr/talkshot/talkshot
+```
+
+Or grab the notarized `.dmg` from [the latest release](https://github.com/flowsxr/talkshot/releases/latest).
+
+Or build from source:
+
 ```bash
 cd native && ./build.sh
 ```

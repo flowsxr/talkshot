@@ -21,7 +21,7 @@
 ---
 
 > [!NOTE]
-> **Talkshot is no longer actively developed.** It started as a way to edit videos and get things done faster with Claude Code. Those ideas have since moved on: video editing now lives in **[OpenMontage](https://openmontage.video)**, and the AI-assistant integration lives in **[OpenClicky](https://github.com/prasanthsasikumar/openclicky)**. Talkshot still works and stays available as-is, but new work happens there.
+> **Talkshot is no longer actively developed.** It started as a way to edit videos and get things done faster with Claude Code. Those ideas have since moved on: video editing now lives in **[OpenMontage](https://openmontage.video)**, and the AI-assistant integration lives in **[OpenClicky](https://openclicky.flowsxr.com)**. Talkshot still works and stays available as-is, but new work happens there.
 >
 > Thank you to everyone who tried Talkshot, filed issues, and sent feedback. It shaped both of those projects.
 

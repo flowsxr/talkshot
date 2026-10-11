@@ -465,6 +465,22 @@
       transform: translateX(2px);
     }
 
+    .hero__sunset {
+      max-width: 560px;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      border: 2px solid var(--accent-pop);
+      border-radius: 4px;
+      margin-bottom: 32px;
+    }
+
+    .hero__sunset a {
+      color: var(--accent-pop);
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
     .hero__headline {
       max-width: 700px;
       margin-bottom: 24px;
@@ -1185,9 +1201,13 @@
       Talksh<span class="wordmark-dot">●</span>t
     </div>
 
-    <a href="https://github.com/flowsxr/talkshot" class="hero__announcement" target="_blank" rel="noopener noreferrer">
-      Native Swift app + Python CLI, both MIT licensed <span class="hero__announcement-arrow" aria-hidden="true">→</span>
-    </a>
+    <p class="hero__sunset">
+      Talkshot is no longer actively developed. Video editing has moved to
+      <a href="https://openmontage.video" target="_blank" rel="noopener noreferrer">OpenMontage</a>
+      and the AI-assistant integration to
+      <a href="https://github.com/prasanthsasikumar/openclicky" target="_blank" rel="noopener noreferrer">OpenClicky</a>.
+      Thank you for trying Talkshot!
+    </p>
 
     <h1 class="display hero__headline">
       You see it. You say it.<br>Your AI acts on it.
